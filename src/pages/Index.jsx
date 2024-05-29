@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Container, VStack, Text, Box, HStack, IconButton, Button } from "@chakra-ui/react";
+import { Container, VStack, Text, Box, HStack, IconButton } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { FaSmile, FaMeh, FaFrown, FaAngry, FaGrinHearts, FaQuestion } from "react-icons/fa";
 
 const teamMembers = ["Alice", "Bob", "Charlie", "Diana"];
@@ -7,18 +8,18 @@ const teamMembers = ["Alice", "Bob", "Charlie", "Diana"];
 const Index = () => {
   const [ratings, setRatings] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handleNext = () => {
-    if (currentIndex < teamMembers.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
+  const navigate = useNavigate();
 
   const handleRating = (name, rating) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
       [name]: rating,
     }));
+    if (currentIndex < teamMembers.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      navigate("/finish");
+    }
   };
 
   return (
@@ -39,9 +40,6 @@ const Index = () => {
             <IconButton aria-label="Love" icon={<FaGrinHearts />} size="lg" colorScheme={ratings[teamMembers[currentIndex]] === 5 ? "teal" : "gray"} onClick={() => handleRating(teamMembers[currentIndex], 5)} />
             <IconButton aria-label="Unknown" icon={<FaQuestion />} size="lg" colorScheme={ratings[teamMembers[currentIndex]] === 0 ? "blue" : "gray"} onClick={() => handleRating(teamMembers[currentIndex], 0)} />
           </HStack>
-          <Button mt={4} onClick={handleNext}>
-            Next
-          </Button>
         </Box>
       </VStack>
     </Container>
