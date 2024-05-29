@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { Container, VStack, Text, Box, HStack, IconButton } from "@chakra-ui/react";
-import { FaSmile, FaMeh, FaFrown, FaAngry, FaGrinHearts } from "react-icons/fa";
+import { Container, VStack, Text, Box, HStack, IconButton, Button } from "@chakra-ui/react";
+import { FaSmile, FaMeh, FaFrown, FaAngry, FaGrinHearts, FaQuestion } from "react-icons/fa";
 
 const teamMembers = ["Alice", "Bob", "Charlie", "Diana"];
 
 const Index = () => {
   const [ratings, setRatings] = useState({});
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    if (currentIndex < teamMembers.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
 
   const handleRating = (name, rating) => {
     setRatings((prevRatings) => ({
@@ -20,20 +27,22 @@ const Index = () => {
         <Text fontSize="2xl" fontWeight="bold">
           Team Member Survey
         </Text>
-        {teamMembers.map((member) => (
-          <Box key={member} p={4} borderWidth={1} borderRadius="md" width="100%">
-            <Text fontSize="xl" mb={4}>
-              {member}
-            </Text>
-            <HStack spacing={4}>
-              <IconButton aria-label="Dislike" icon={<FaAngry />} size="lg" colorScheme={ratings[member] === 1 ? "red" : "gray"} onClick={() => handleRating(member, 1)} />
-              <IconButton aria-label="Frown" icon={<FaFrown />} size="lg" colorScheme={ratings[member] === 2 ? "orange" : "gray"} onClick={() => handleRating(member, 2)} />
-              <IconButton aria-label="Meh" icon={<FaMeh />} size="lg" colorScheme={ratings[member] === 3 ? "yellow" : "gray"} onClick={() => handleRating(member, 3)} />
-              <IconButton aria-label="Smile" icon={<FaSmile />} size="lg" colorScheme={ratings[member] === 4 ? "green" : "gray"} onClick={() => handleRating(member, 4)} />
-              <IconButton aria-label="Love" icon={<FaGrinHearts />} size="lg" colorScheme={ratings[member] === 5 ? "teal" : "gray"} onClick={() => handleRating(member, 5)} />
-            </HStack>
-          </Box>
-        ))}
+        <Box p={4} borderWidth={1} borderRadius="md" width="100%">
+          <Text fontSize="xl" mb={4}>
+            {teamMembers[currentIndex]}
+          </Text>
+          <HStack spacing={4}>
+            <IconButton aria-label="Dislike" icon={<FaAngry />} size="lg" colorScheme={ratings[teamMembers[currentIndex]] === 1 ? "red" : "gray"} onClick={() => handleRating(teamMembers[currentIndex], 1)} />
+            <IconButton aria-label="Frown" icon={<FaFrown />} size="lg" colorScheme={ratings[teamMembers[currentIndex]] === 2 ? "orange" : "gray"} onClick={() => handleRating(teamMembers[currentIndex], 2)} />
+            <IconButton aria-label="Meh" icon={<FaMeh />} size="lg" colorScheme={ratings[teamMembers[currentIndex]] === 3 ? "yellow" : "gray"} onClick={() => handleRating(teamMembers[currentIndex], 3)} />
+            <IconButton aria-label="Smile" icon={<FaSmile />} size="lg" colorScheme={ratings[teamMembers[currentIndex]] === 4 ? "green" : "gray"} onClick={() => handleRating(teamMembers[currentIndex], 4)} />
+            <IconButton aria-label="Love" icon={<FaGrinHearts />} size="lg" colorScheme={ratings[teamMembers[currentIndex]] === 5 ? "teal" : "gray"} onClick={() => handleRating(teamMembers[currentIndex], 5)} />
+            <IconButton aria-label="Unknown" icon={<FaQuestion />} size="lg" colorScheme={ratings[teamMembers[currentIndex]] === 0 ? "blue" : "gray"} onClick={() => handleRating(teamMembers[currentIndex], 0)} />
+          </HStack>
+          <Button mt={4} onClick={handleNext}>
+            Next
+          </Button>
+        </Box>
       </VStack>
     </Container>
   );
